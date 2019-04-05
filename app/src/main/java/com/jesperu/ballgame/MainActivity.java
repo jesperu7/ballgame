@@ -23,12 +23,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private TextView xText, yText, zText;
     private Button settingsButton;
 
-
+    // What to do when the sensor catches movement
     @Override
     public void onSensorChanged(SensorEvent event) {
         xText.setText("X: " + event.values[0]);
         yText.setText("Y: " + event.values[1]);
         zText.setText("Z: " + event.values[2]);
+
+        // Testtesttest
+        xText.setVisibility(View.GONE);
+        yText.setVisibility(View.GONE);
+        zText.setVisibility(View.GONE);
     }
 
     @Override
@@ -51,10 +56,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorManager.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_GAME);
 
         // Assign textviews
-        xText = (TextView) findViewById(R.id.xText);
-        yText = (TextView) findViewById(R.id.yText);
-        zText = (TextView) findViewById(R.id.zText);
-
+        xText = findViewById(R.id.xText);
+        yText = findViewById(R.id.yText);
+        zText = findViewById(R.id.zText);
 
         settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    // Assigns the set MIN_ACC chosen in settings
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == RESULT_CODE){
@@ -75,10 +80,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 String temp = b.get(SettingsActivity.SENSITIVITY).toString();
                 MIN_ACC = Integer.parseInt(temp);
 
+                //just to test if the value gets passed correctly
+                xText.setText(Integer.toString(MIN_ACC));
             }
         }
     }
 
+    // Opens SettingsActivity
     public void openSettings() {
         Intent i = new Intent(this, SettingsActivity.class);
         startActivityForResult(i, RESULT_CODE);
