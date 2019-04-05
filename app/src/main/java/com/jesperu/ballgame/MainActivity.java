@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
 import android.content.Intent;
+import java.lang.Math;
 
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
@@ -32,6 +33,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         if (event.values[0] >= MIN_ACC || event.values[1] >= MIN_ACC || event.values[2] >= MIN_ACC){
             // start game
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            double ACC = calculateACC(x, y, z).doubleValue();
+
+            
+
+
         }
 
         // score = length of the throw
@@ -118,5 +128,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         p2.setText("2. " + Integer.toString(second));
         p3.setText("3. " + Integer.toString(third));
     }
+
+    private static Number calculateACC(float x, float y, float z) {
+        double temp;
+
+        temp = Math.sqrt(x*x + y*y + z*z) - SensorManager.GRAVITY_EARTH;
+
+        return temp;
+    }
+
 
 }
