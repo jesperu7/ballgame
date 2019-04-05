@@ -17,23 +17,30 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
     public static final int RESULT_CODE = 0;
     private static int MIN_ACC;
+    private int first = 0;
+    private int second = 0;
+    private int third = 0;
+    private int score;
 
-    private Sensor mySensor;
-    private SensorManager sensorManager;
-    private TextView xText, yText, zText;
-    private Button settingsButton;
+    private TextView p1, p2, p3;
 
     // What to do when the sensor catches movement
     @Override
     public void onSensorChanged(SensorEvent event) {
-        xText.setText("X: " + event.values[0]);
-        yText.setText("Y: " + event.values[1]);
-        zText.setText("Z: " + event.values[2]);
+        TextView yourScore;
+        yourScore = findViewById(R.id.yourScore);
 
-        // Testtesttest
-        xText.setVisibility(View.GONE);
-        yText.setVisibility(View.GONE);
-        zText.setVisibility(View.GONE);
+        if (event.values[0] > MIN_ACC){
+            // start game
+        } else if (event.values[1] > MIN_ACC) {
+            // start game
+        } else if (event.values[2] > MIN_ACC){
+            // start game
+        }
+
+        // score = length of the throw
+        yourScore.setText("You scored: " + Integer.toString(score));
+        checkHighScore();
     }
 
     @Override
@@ -47,19 +54,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
 
         // Sensor Manager
+        SensorManager sensorManager;
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         // Accelerometer sensor
+        Sensor mySensor;
         mySensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        // Register sensorlistener
+        // Register sensor listener
         sensorManager.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_GAME);
 
-        // Assign textviews
-        xText = findViewById(R.id.xText);
-        yText = findViewById(R.id.yText);
-        zText = findViewById(R.id.zText);
+        // Outputs high scores
+        p1 = findViewById(R.id.firstPlace);
+        p2 = findViewById(R.id.secondPlace);
+        p3 = findViewById(R.id.thirdPlace);
 
+        p1.setText(Integer.toString(first));
+        p2.setText(Integer.toString(second));
+        p3.setText(Integer.toString(third));
+
+
+        // initiate button to settings
+        Button settingsButton;
         settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 openSettings();
             }
         });
-
 
     }
 
@@ -79,9 +94,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Bundle b = data.getExtras();
                 String temp = b.get(SettingsActivity.SENSITIVITY).toString();
                 MIN_ACC = Integer.parseInt(temp);
-
-                //just to test if the value gets passed correctly
-                xText.setText(Integer.toString(MIN_ACC));
             }
         }
     }
@@ -92,5 +104,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         startActivityForResult(i, RESULT_CODE);
     }
 
+    // checks if the score goes on the scoreboard
+    public void checkHighScore() {
+        if (score >= first) {
+            third = second;
+            second = first;
+            first = score;
+        } else if (score >= second){
+            third = second;
+            second = score;
+        } else if (score >= third) {
+            third = score;
+        }
+
+        // outputs new high scores
+        p1.setText("1. " + Integer.toString(first));
+        p2.setText("2. " + Integer.toString(second));
+        p3.setText("3. " + Integer.toString(third));
+    }
 
 }
