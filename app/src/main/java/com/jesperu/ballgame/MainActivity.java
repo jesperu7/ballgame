@@ -30,11 +30,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         TextView yourScore;
         yourScore = findViewById(R.id.yourScore);
 
-        if (event.values[0] > MIN_ACC){
-            // start game
-        } else if (event.values[1] > MIN_ACC) {
-            // start game
-        } else if (event.values[2] > MIN_ACC){
+        if (event.values[0] >= MIN_ACC || event.values[1] >= MIN_ACC || event.values[2] >= MIN_ACC){
             // start game
         }
 
