@@ -30,10 +30,11 @@ import java.nio.channels.InterruptedByTimeoutException;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-
+        // Initiate seek bar with a listener
         seekBar = findViewById(R.id.seekBar);
         seekBar.setMax(3);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            // What to do with the different options on the seek bar
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int temp = seekBar.getProgress();
@@ -64,6 +65,7 @@ import java.nio.channels.InterruptedByTimeoutException;
             }
         });
 
+        // Initiates button to go back to MainActivity
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,10 +73,9 @@ import java.nio.channels.InterruptedByTimeoutException;
                 goBack();
             }
         });
-
-
     }
 
+    // Function to go back to MainActivity and pass with the chosen sensitivity for the accelerometer
     public void goBack(){
         Intent i = new Intent(SettingsActivity.this, MainActivity.class);
         Bundle b = new Bundle();
@@ -83,7 +84,6 @@ import java.nio.channels.InterruptedByTimeoutException;
         i.putExtras(b);
         setResult(Activity.RESULT_OK, i);
         finish();
-
     }
 
 }
